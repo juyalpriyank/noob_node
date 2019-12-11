@@ -69,6 +69,41 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "http://localhost:8081/orgs/priyank/members",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"comment\": \"testting\"}"
+				},
+				"url": {
+					"raw": "http://localhost:8081/orgs/Poriyank/members",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"orgs",
+						"Poriyank",
+						"members"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

@@ -28,9 +28,11 @@ mongodb.connect(uri, {useUnifiedTopology: true}, function(err, client){
 // TODO: Call control c function to close db conn
 
 async function populateOrgData(req, org_name){
-    var coll = req.app.locals.organisationsColl
+    var coll = req.app.locals.memberColl
     numOfRecords = Math.floor(Math.random() * Math.floor(5)) + 1
-    for(var i = numOfRecords; i<=numOfRecords; i++){
+    console.log("Printing numofrecords", numOfRecords)
+    console.log("Printing org_name", org_name)
+    for(var i = 0; i<=numOfRecords; i++){
         myObj = {"name": faker.name.findName(),
                  "org_name": org_name,
                  "followers": faker.random.number(),
@@ -38,14 +40,29 @@ async function populateOrgData(req, org_name){
                  "email": faker.internet.email(),
                  "avatar": faker.internet.avatar()
                 }
-        await coll.insertOne(myObj)
+        await coll.insertOne(myObj, function(err, res) {
+            if (err){
+                console.log("Error from populateOrgData", err)
+                throw err
+            }
+          })
     }
+}
+
+async function membersOfOrg(req, orgName){
+    var memberColl = req.app.locals.memberColl
+    var orgColl = req.app.locals.organisationsColl
+    var orgExists = await orgColl.findOne({"org_name": orgName})
+    if(orgExists){
+        var members = await memberColl.find({"org_name": orgName}, { projection: { _id: 0 } }).sort({followers: -1}).toArray()
+        return members
+    }
+    return
 }
 
 async function orgExists(req, org_name){
     var coll = req.app.locals.organisationsColl
     var upsertVal = await coll.updateOne({"org_name": org_name}, {$setOnInsert: {"org_name": org_name}}, {upsert: true})
-    console.log("printing t:-", t.result)
     if (upsertVal.result.upserted){
         console.log("upserted")
         await populateOrgData(req, org_name)
@@ -116,6 +133,13 @@ app.all('/orgs/:org/comment', async function(req, res){
     res.send({"success": true, "error": false, "message": msg, "data": data})
 })
 
+app.get('/orgs/:org/members', async function(req, res){
+    data = await membersOfOrg(req, req.params.org)
+    res.send({"success": true, "error": false, "message": "Members have been successfully fetched.", "data": data})
+})
+
+
+// Only for testing
 app.get('/', function(req, res){
     res.send("Hello world")
     var formatted = datetime.format('d-m-y H:M:S')
