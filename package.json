@@ -3,10 +3,6 @@
   "version": "1.0.0",
   "description": "hello worl",
   "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -15,5 +11,15 @@
     "mongodb": "^3.4.0",
     "my-dependency": "^1.0.1",
     "node-datetime": "^2.1.2"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^2.0.1",
+    "mocha": "^2.4.5"
+  },
+  "scripts": {
+    "start": "SET NODE_ENV=dev && node server.js",
+    "test": "mocha --timeout 10000"
   }
+}
 }

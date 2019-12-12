@@ -1,19 +1,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const app = express();
-const routes = require('./routes/routes')
-const db = require('./db/db')
+var app = module.exports = express();
+const routes = require('./routes/routes');
+const db = require('./db/db');
 
 app.use(bodyParser.json());
 
-app.use('/', routes)
+app.use('/', routes);
 
 
 var server = app.listen(8081, function(){
-    var host = server.address().address
-    var port = server.address().port
+    var host = server.address().address;
+    var port = server.address().port;
 
-    console.log("API serving at http://%s:%d", host, port)
+    console.log("API serving at http://%s:%d", host, port);
 })
-
-module.exports = app;

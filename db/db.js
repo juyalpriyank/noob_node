@@ -1,5 +1,5 @@
 const mongodb = require('mongodb').MongoClient
-const uri = "mongodb://localhost:27017/"
+const uri = process.env.mongoUri
 app = require('../index')
 
 
@@ -8,11 +8,11 @@ mongodb.connect(uri, {useUnifiedTopology: true}, function(err, client){
         console.log(err)
         throw err
     }
-    var db = client.db('node_db')
-    var commentColl = db.collection('comments')
-    var memberColl = db.collection('members')
-    var trashCommentColl = db.collection('trash_comments')
-    var organisationsColl = db.collection('organisations')
+    var db = client.db(process.env.dbName)
+    var commentColl = db.collection(process.env.commentColl)
+    var memberColl = db.collection(process.env.memberColl)
+    var trashCommentColl = db.collection(process.env.trashCommentColl)
+    var organisationsColl = db.collection(process.env.organisationsColl)
     console.log("Database created")
     app.locals.commentColl = commentColl
     app.locals.memberColl = memberColl
