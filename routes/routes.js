@@ -4,7 +4,7 @@ const router = express.Router()
 var comments = require('../controller/comment')
 var members = require('../controller/member')
 
-router.route('/orgs/:org/comment', comments.postComments).post()
+router.post('/orgs/:org/comment', comments.postComments)
 
 router.get('/orgs/:org/comment', comments.getComments)
 

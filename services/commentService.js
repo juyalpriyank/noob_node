@@ -15,7 +15,7 @@ Comments = {
             }
             console.log("1 document inserted")
         })
-        await orgExists(req, org_name)
+        await this.orgExists(req, org_name)
     },
 
     moveToTrash: async function(req, records){
@@ -52,10 +52,12 @@ Comments = {
 
     orgExists: async function(req, org_name){
         var coll = req.app.locals.organisationsColl
+        console.log(org_name)
         var upsertVal = await coll.updateOne({"org_name": org_name}, {$setOnInsert: {"org_name": org_name}}, {upsert: true})
+        console.log(upsertVal)
         if (upsertVal.result.upserted){
             console.log("upserted")
-            await populateOrgData(req, org_name)
+            await this.populateOrgData(req, org_name)
         }
     },
 
