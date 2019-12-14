@@ -9,6 +9,9 @@ mongodb.connect(uri, {useUnifiedTopology: true}, function(err, client){
         throw err
     }
     var db = client.db(process.env.dbName)
+    if ( process.env.NODE_ENV === 'test' ) { 
+        var db = process.env.testDbName  
+      }
     var commentColl = db.collection(process.env.commentColl)
     var memberColl = db.collection(process.env.memberColl)
     var trashCommentColl = db.collection(process.env.trashCommentColl)

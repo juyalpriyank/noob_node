@@ -2,7 +2,7 @@
   "name": "node_app",
   "version": "1.0.0",
   "description": "hello worl",
-  "main": "server.js",
+  "main": "index.js",
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -18,7 +18,7 @@
     "mocha": "^2.4.5"
   },
   "scripts": {
-    "start": "SET NODE_ENV=dev && node server.js",
+    "start": "SET NODE_ENV=dev && node index.js",
     "test": "mocha --timeout 10000"
   }
 }

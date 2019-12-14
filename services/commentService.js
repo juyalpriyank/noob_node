@@ -5,6 +5,7 @@ const faker = require('faker');
 Comments = {
 
     insertComment: async function(req, org_name, comment){
+        try{
         var coll = req.app.locals.commentColl
         var formatted = datetime.format('d-m-y H:M:S')
         var doc = {"comment": comment, "org_name": org_name, "created": formatted}
@@ -16,13 +17,17 @@ Comments = {
             console.log("1 document inserted")
         })
         await this.orgExists(req, org_name)
+    }
+    catch(err){
+        console.log("Printing error from insertComment", err)
+    }
     },
 
     moveToTrash: async function(req, records){
+        try {
         var coll = req.app.locals.trashCommentColl
         var formatted = datetime.format('d-m-y H:M:S')
         records.forEach(function(key){
-            console.log("Printing each record", key)
             key.deleted = formatted
             coll.insertOne(key, function(err, res){
                 if(err) {
@@ -32,15 +37,25 @@ Comments = {
                 })
         })
         console.log('All records moved to trash')
+    }
+    catch(err){
+        console.log("Printing error from movetTrash", err)
+    }
     },
 
     findAllComments: async function(req, org_name){
+        try{
         var coll = req.app.locals.commentColl
         items = await coll.find({"org_name": org_name}, { projection: { _id: 0 } }).toArray()
         return items
+        }
+        catch(err){
+            console.log("Printing error from findAllComments", err)
+        }
     },
 
     hardDelete: async function(req, org_name){
+        try{
         var coll = req.app.locals.commentColl
         await coll.deleteMany({"org_name": org_name}, function(err, result){
             if (err) {
@@ -48,20 +63,28 @@ Comments = {
                 throw err
             }
         })
+    }
+    catch(err){
+        console.log("Printig error from hardDelete", err)
+    }
     },
 
     orgExists: async function(req, org_name){
+        try{
         var coll = req.app.locals.organisationsColl
-        console.log(org_name)
         var upsertVal = await coll.updateOne({"org_name": org_name}, {$setOnInsert: {"org_name": org_name}}, {upsert: true})
-        console.log(upsertVal)
         if (upsertVal.result.upserted){
             console.log("upserted")
             await this.populateOrgData(req, org_name)
         }
+    }
+    catch(err){
+        console.log("Printing error from orgExists", err)
+    }
     },
 
     populateOrgData: async function(req, org_name){
+        try{
         var coll = req.app.locals.memberColl
         numOfRecords = Math.floor(Math.random() * Math.floor(5)) + 1
         console.log("Printing numofrecords", numOfRecords)
@@ -80,6 +103,10 @@ Comments = {
                     throw err
                 }
             })
+        }
+        }
+        catch(err){
+            console.log("Printing error from populateOrgData", err)
         }
     }
 }

@@ -1,6 +1,7 @@
 Members = {
 
     membersOfOrg: async function(req, orgName){
+        try{
         var memberColl = req.app.locals.memberColl
         var orgColl = req.app.locals.organisationsColl
         var orgExists = await orgColl.findOne({"org_name": orgName})
@@ -9,6 +10,10 @@ Members = {
             return members
         }
         return
+    }
+    catch(err){
+        console.log("Printing error from membrsOfOrg", err)
+    }
     }
 }
 
