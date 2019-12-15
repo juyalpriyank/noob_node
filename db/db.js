@@ -10,7 +10,8 @@ mongodb.connect(uri, {useUnifiedTopology: true}, function(err, client){
     }
     var db = client.db(process.env.dbName)
     if ( process.env.NODE_ENV === 'test' ) { 
-        var db = process.env.testDbName  
+        console.log(process.env.testDbName)
+        var db = client.db(process.env.testDbName)
       }
     var commentColl = db.collection(process.env.commentColl)
     var memberColl = db.collection(process.env.memberColl)
