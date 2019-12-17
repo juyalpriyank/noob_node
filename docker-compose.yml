@@ -2,8 +2,9 @@ version: "2"
 services:
   app:
     container_name: node_app
-    restart: always
     build: .
+    env_file:
+      - ./rest.env
     ports:
       - "8080:8080"
     links:
@@ -14,4 +15,4 @@ services:
     volumes:
       - ./data:/data/db
     ports:
-      - "27017:27021"
+      - "27017:27017"
