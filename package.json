@@ -9,7 +9,6 @@
     "express": "^4.17.1",
     "faker": "^4.1.0",
     "mongodb": "^3.4.0",
-    "my-dependency": "^1.0.1",
     "node-datetime": "^2.1.2"
   },
   "devDependencies": {
